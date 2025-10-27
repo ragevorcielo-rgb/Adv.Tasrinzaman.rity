@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাড. তাসরিন জামান রীতি - Adv. Tasrin Zaman Rity - Advocate</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Add EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo.jpg" alt="অ্যাড. তাসরিন জামান রীতি - Adv. Tasrin Zaman Rity Logo" class="logo-img">
+                <div class="logo-text">
+                    <div class="bengali-name">অ্যাড. তাসরিন জামান রীতি</div>
+                    <div class="english-name">Adv. Tasrin Zaman Rity</div>
+                    <span>Advocate</span>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#law-content">Law Content</a></li>
+                    <li><a href="#recent-issues">Recent Issues</a></li>
+                    <li><a href="#politics">Politics</a></li>
+                    <li><a href="#recent-laws">Recent Laws</a></li>
+                    <li><a href="#recent-news">Recent News</a></li>
+                    <li><a href="#admin-panel" class="admin-only">Admin Panel</a></li>
+                    <li><a href="#about">About Me</a></li>
+                    <li id="auth-status"></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-form">
+            <h3>Admin Login</h3>
+            
+            <!-- Step 1: Email Input -->
+            <div class="login-step active" id="step1">
+                <div class="step-indicator">Step 1: Enter Owner Email</div>
+                <div class="email-note">
+                    <i class="fas fa-info-circle"></i> Only the owner email can access admin panel
+                </div>
+                <form id="emailForm">
+                    <div class="form-group">
+                        <label for="email">Owner Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter owner email" required value="Ragevorcielo@gmail.com">
+                        <small style="color: var(--text-light); margin-top: 5px; display: block;">
+                            Enter the exact owner email address to receive OTP
+                        </small>
+                    </div>
+                    <button type="submit" class="login-button" id="sendOtpBtn">
+                        <i class="fas fa-paper-plane"></i> Send OTP
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Step 2: OTP Verification -->
+            <div class="login-step" id="step2">
+                <div class="step-indicator">Step 2: Enter OTP</div>
+                <div class="email-note">
+                    <i class="fas fa-envelope"></i> OTP sent to: <strong id="targetEmail">Ragevorcielo@gmail.com</strong>
+                </div>
+                <form id="otpForm">
+                    <div class="form-group">
+                        <label for="otp">Enter 6-digit OTP</label>
+                        <div class="otp-container">
+                            <input type="text" class="otp-input" maxlength="1" data-index="0" autocomplete="off">
+                            <input type="text" class="otp-input" maxlength="1" data-index="1" autocomplete="off">
+                            <input type="text" class="otp-input" maxlength="1" data-index="2" autocomplete="off">
+                            <input type="text" class="otp-input" maxlength="1" data-index="3" autocomplete="off">
+                            <input type="text" class="otp-input" maxlength="1" data-index="4" autocomplete="off">
+                            <input type="text" class="otp-input" maxlength="1" data-index="5" autocomplete="off">
+                        </div>
+                        <input type="hidden" id="otpCode">
+                        <div class="otp-timer" id="otpTimer">Resend OTP in <span id="countdown">60</span> seconds</div>
+                        <button type="button" class="resend-otp" id="resendOtp" disabled>Resend OTP</button>
+                    </div>
+                    <button type="submit" class="login-button" id="verifyOtpBtn">
+                        <i class="fas fa-check"></i> Verify OTP
+                    </button>
+                </form>
+                <button type="button" class="login-button" style="background-color: var(--gray-dark); margin-top: 10px;" id="backToEmail">
+                    <i class="fas fa-arrow-left"></i> Back to Email
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="about-logo">
+                <img src="assets/images/logo.jpg" alt="অ্যাড. তাসরিন জামান রীতি - Adv. Tasrin Zaman Rity Logo" class="about-logo-img">
+            </div>
+            <div class="bengali-hero">অ্যাড. তাসরিন জামান রীতি</div>
+            <h2>Advocate Tasrin Zaman Rity</h2>
+            <p>Narail Judge Court, Narail | Home District: Narail</p>
+            <p>Dedicated to Justice, Committed to Excellence</p>
+            <a href="#about" class="cta-button">Learn More About Me</a>
+        </div>
+    </section>
+
+    <!-- Law Content Section -->
+    <section id="law-content">
+        <div class="container">
+            <div class="section-title">
+                <h2>Law Related Content</h2>
+            </div>
+            <div class="posts-grid" id="law-content-posts">
+                <div class="post-card">
+                    <div class="post-image">
+                        <i class="fas fa-gavel fa-3x"></i>
+                    </div>
+                    <div class="post-content">
+                        <h3>Legal Rights and Responsibilities</h3>
+                        <div class="post-meta">
+                            <i class="far fa-calendar"></i> Recently Added
+                        </div>
+                        <p class="post-excerpt">Understanding your fundamental legal rights and responsibilities as a citizen.</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+                <div class="post-card">
+                    <div class="post-image">
+                        <i class="fas fa-balance-scale fa-3x"></i>
+                    </div>
+                    <div class="post-content">
+                        <h3>Court Procedures Explained</h3>
+                        <div class="post-meta">
+                            <i class="far fa-calendar"></i> Recently Added
+                        </div>
+                        <p class="post-excerpt">A comprehensive guide to understanding court procedures and legal processes.</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Issues Section -->
+    <section id="recent-issues" style="background-color: var(--gray-light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Recent Issues</h2>
+            </div>
+            <div class="posts-grid" id="recent-issues-posts">
+                <div class="post-card">
+                    <div class="post-image">
+                        <i class="fas fa-exclamation-triangle fa-3x"></i>
+                    </div>
+                    <div class="post-content">
+                        <h3>Current Legal Challenges</h3>
+                        <div class="post-meta">
+                            <i class="far fa-calendar"></i> Recently Added
+                        </div>
+                        <p class="post-excerpt">Analysis of recent legal challenges facing our judicial system.</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Politics Section -->
+    <section id="politics">
+        <div class="container">
+            <div class="section-title">
+                <h2>Politics</h2>
+            </div>
+            <div class="posts-grid" id="politics-posts">
+                <div class="post-card">
+                    <div class="post-image">
+                        <i class="fas fa-landmark fa-3x"></i>
+                    </div>
+                    <div class="post-content">
+                        <h3>Political Landscape Analysis</h3>
+                        <div class="post-meta">
+                            <i class="far fa-calendar"></i> Recently Added
+                        </div>
+                        <p class="post-excerpt">Current political developments and their legal implications.</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Laws Section -->
+    <section id="recent-laws" style="background-color: var(--gray-light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Recent Laws</h2>
+            </div>
+            <div class="posts-grid" id="recent-laws-posts">
+                <div class="post-card">
+                    <div class="post-image">
+                        <i class="fas fa-scale-balanced fa-3x"></i>
+                    </div>
+                    <div class="post-content">
+                        <h3>New Legislation Updates</h3>
+                        <div class="post-meta">
+                            <i class="far fa-calendar"></i> Recently Added
+                        </div>
+                        <p class="post-excerpt">Recent changes in legislation and their impact on society.</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent News Section -->
+    <section id="recent-news">
+        <div class="container">
+            <div class="section-title">
+                <h2>Recent News</h2>
+            </div>
+            <div class="posts-grid" id="recent-news-posts">
+                <div class="post-card">
+                    <div class="post-image">
+                        <i class="fas fa-newspaper fa-3x"></i>
+                    </div>
+                    <div class="post-content">
+                        <h3>Legal News Updates</h3>
+                        <div class="post-meta">
+                            <i class="far fa-calendar"></i> Recently Added
+                        </div>
+                        <p class="post-excerpt">Latest news and updates from the legal world.</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel -->
+    <section id="admin-panel" class="admin-only">
+        <div class="container">
+            <div class="section-title">
+                <h2>Admin Panel <span class="admin-indicator">Owner Access</span></h2>
+            </div>
+            
+            <div class="admin-panel">
+                <h3>Create New Post</h3>
+                
+                <!-- Tabs for different sections -->
+                <div class="tabs">
+                    <div class="tab active" data-tab="law-content">Law Content</div>
+                    <div class="tab" data-tab="recent-issues">Recent Issues</div>
+                    <div class="tab" data-tab="politics">Politics</div>
+                    <div class="tab" data-tab="recent-laws">Recent Laws</div>
+                    <div class="tab" data-tab="recent-news">Recent News</div>
+                </div>
+                
+                <!-- Post Form -->
+                <form class="post-form" id="postForm">
+                    <div class="form-group">
+                        <label for="postTitle">Post Title</label>
+                        <input type="text" id="postTitle" class="form-control" placeholder="Enter post title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postContent">Post Content</label>
+                        <textarea id="postContent" class="form-control" rows="5" placeholder="Write your post content here..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postImage">Image URL (Optional)</label>
+                        <input type="text" id="postImage" class="form-control" placeholder="Enter image URL">
+                    </div>
+                    
+                    <input type="hidden" id="postSection" value="law-content">
+                    
+                    <button type="submit" class="post-button" id="submitPostBtn">
+                        <i class="fas fa-paper-plane"></i> Publish Post
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Posts Management -->
+            <div class="admin-panel">
+                <h3>Manage Posts</h3>
+                <div id="postsManagement">
+                    <p>No posts available. Create your first post above.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Me</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="assets/images/logo.jpg" alt="অ্যাড. তাসরিন জামান রীতি - Adv. Tasrin Zaman Rity" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                </div>
+                <div class="about-text">
+                    <div class="bengali-name">অ্যাড. তাসরিন জামান রীতি</div>
+                    <h3>Advocate Tasrin Zaman Rity</h3>
+                    <p><i class="fas fa-map-marker-alt" style="color: var(--accent);"></i> Narail Judge Court, Narail</p>
+                    <p><i class="fas fa-home" style="color: var(--accent);"></i> Home District: Narail</p>
+                    
+                    <div class="quote">
+                        <p>"I was born in this country, in this society — but I do not belong only to this country or this society. I belong to all countries, to all people."</p>
+                        <p class="bengali">"আমি এই দেশে,এই সমাজে জন্মেছি বলে, শুধু এই দেশের... এই সমাজের নই, আমি সকল দেশের সকল মানুষের......."</p>
+                    </div>
+                    
+                    <p><em>"When you change yourself, you change the world around you."</em></p>
+                    
+                    <p>Advocate Tasrin Zaman Rity is a dedicated legal professional practicing at the Narail Judge Court in Narail. With a deep commitment to justice and legal excellence, Advocate Zaman brings extensive experience and knowledge to each case.</p>
+                    
+                    <p>Born and raised in Narail, Advocate Zaman maintains strong connections to the local community while embracing a global perspective on law and justice. This unique viewpoint informs their approach to legal practice and their contributions to the field.</p>
+                    
+                    <p>Through this website, Advocate Zaman shares insights on legal matters, recent developments in law and politics, and perspectives on issues affecting society today.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo" style="justify-content: flex-start; margin-bottom: 1rem;">
+                        <img src="assets/images/logo.jpg" alt="অ্যাড. তাসরিন জামান রীতি - Adv. Tasrin Zaman Rity Logo" class="logo-img" style="height: 50px;">
+                        <div class="logo-text">
+                            <div class="bengali-name" style="font-size: 1.2rem;">অ্যাড. তাসরিন জামান রীতি</div>
+                            <div class="english-name" style="font-size: 0.9rem;">Adv. Tasrin Zaman Rity</div>
+                            <span style="font-size: 0.8rem;">Advocate</span>
+                        </div>
+                    </div>
+                    <p><i class="fas fa-map-marker-alt"></i> Narail Judge Court</p>
+                    <p>Narail, Bangladesh</p>
+                    <p><i class="fas fa-envelope"></i> Email: tasrin634@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> Phone: +880 XXXX-XXXXXX</p>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/profile.php?id=61581472319420&mibextid=rS40aB7S9Ucbxw6v" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/tasrin.zaman/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#home">Home</a>
+                    <a href="#law-content">Law Content</a>
+                    <a href="#recent-issues">Recent Issues</a>
+                    <a href="#politics">Politics</a>
+                    <a href="#recent-laws">Recent Laws</a>
+                    <a href="#recent-news">Recent News</a>
+                    <a href="#admin-panel" class="admin-only">Admin Panel</a>
+                    <a href="#about">About Me</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal Disclaimer</h3>
+                    <p>The content on this website is for informational purposes only and does not constitute legal advice. Consult with a qualified legal professional for advice on your specific situation.</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="bengali">© ২০২৩ অ্যাড. তাসরিন জামান রীতি - Adv. Tasrin Zaman Rity. সর্বস্বত্ব সংরক্ষিত।</p>
+                <p>© 2023 Adv. Tasrin Zaman Rity. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

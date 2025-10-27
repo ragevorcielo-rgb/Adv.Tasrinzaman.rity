@@ -1,0 +1,58 @@
+
+## 🛠️ Setup Instructions
+
+### 1. Upload to GitHub
+
+1. Create a new repository on GitHub
+2. Name it: `Advocate-Tasrin-Zaman-Rity-Website`
+3. Upload all files from this folder
+4. Enable GitHub Pages in repository settings
+
+### 2. Enable GitHub Pages
+
+1. Go to repository **Settings**
+2. Scroll to **Pages** section
+3. Select **main branch** as source
+4. Click **Save**
+
+### 3. Custom Domain (Optional)
+
+1. Add your domain to `CNAME` file
+2. Update DNS settings with your domain provider
+
+## 🔐 Admin Access
+
+- **Email**: Ragevorcielo@gmail.com
+- **OTP System**: Integrated with EmailJS
+- **Admin Panel**: Accessible after OTP verification
+
+## 📧 Email Configuration
+
+The website uses EmailJS for OTP delivery:
+- Service ID: `Rage9568`
+- Template ID: `template_7a1mw2e`
+- Public Key: `UdO6Lm6hT4CL1aEHM`
+
+## 🎨 Customization
+
+- Update contact information in `index.html`
+- Replace logo in `assets/images/logo.jpg`
+- Modify colors in `assets/css/style.css`
+- Update social media links
+
+## 📱 Responsive Design
+
+- Mobile-friendly layout
+- Tablet optimized
+- Desktop enhanced
+
+## 📞 Support
+
+For any issues or questions, please contact:
+- Email: tasrin634@gmail.com
+- Facebook: [Advocate Tasrin Zaman Rity](https://www.facebook.com/profile.php?id=61581472319420)
+- Instagram: [@tasrin.zaman](https://www.instagram.com/tasrin.zaman/)
+
+## 📄 License
+
+© 2023 Advocate Tasrin Zaman Rity. All rights reserved.
